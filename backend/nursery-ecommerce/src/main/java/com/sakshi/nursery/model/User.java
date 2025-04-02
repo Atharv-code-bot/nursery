@@ -1,14 +1,14 @@
 package com.sakshi.nursery.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import java.util.UUID;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
-@Getter
-@Setter
+@Table(name = "USERS")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -21,9 +21,13 @@ public class User {
     private String name;
 
     @Column(nullable = false, unique = true, length = 255)
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            message = "Invalid email format")
     private String email;
 
     @Column(nullable = false)
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character")
     private String password;
 
     @Enumerated(EnumType.STRING)
