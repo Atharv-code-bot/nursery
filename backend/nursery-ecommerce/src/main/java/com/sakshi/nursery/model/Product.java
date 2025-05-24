@@ -1,12 +1,10 @@
 package com.sakshi.nursery.model;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-
 @Entity
 @Table(name = "products")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -23,15 +21,13 @@ public class Product {
 
     @Column(nullable = false)
     private Double price;
-
     @Column(nullable = false)
-    private Integer stockQuantity; // Available stock
-
+    private Integer stockQuantity;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference
     private Category category;
-
     @Column(nullable = true)
-    private String imageUrl; // Store image path or URL
-
+    private String imageUrl;
 }
+
