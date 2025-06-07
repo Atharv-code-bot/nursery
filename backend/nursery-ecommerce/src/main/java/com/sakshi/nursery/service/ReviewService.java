@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,23 +27,30 @@ public class ReviewService {
 
     public ReviewResponse addReview(UUID userId, ReviewRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
-        Product product = productRepository.findById(request.getProductId()).orElseThrow();
+        Optional<Product> product = productRepository.findById(request.getProductId());
 
-        Review review = new Review();
-        review.setUser(user);
-        review.setProduct(product);
-        review.setRating(request.getRating());
-        review.setComment(request.getComment());
+        if (product.isPresent()) {
+            Review review = new Review();
+            review.setUser(user);
+            review.setProduct(product.get());
+            review.setRating(request.getRating());
+            review.setComment(request.getComment());
 
-        Review saved = reviewRepository.save(review);
+            Review saved = reviewRepository.save(review);
 
-        return mapToResponse(saved);
+            return mapToResponse(saved);
+        }
+        return null;
+
     }
 
     public List<ReviewResponse> getReviewsForProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow();
-        List<Review> reviews = reviewRepository.findByProduct(product);
-        return reviews.stream().map(this::mapToResponse).collect(Collectors.toList());
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isPresent()) {
+            List<Review> reviews = reviewRepository.findByProduct(product.get());
+            return reviews.stream().map(this::mapToResponse).collect(Collectors.toList());
+        }
+        return null;
     }
 
     private ReviewResponse mapToResponse(Review review) {
