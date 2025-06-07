@@ -1,10 +1,8 @@
 package com.sakshi.nursery.service;
 
 import com.sakshi.nursery.config.AuthUtil;
-import com.sakshi.nursery.dto.PasswordChangeRequest;
-import com.sakshi.nursery.dto.UpdateUserRequest;
-import com.sakshi.nursery.dto.UserDto;
-import com.sakshi.nursery.dto.UserMapper;
+import com.sakshi.nursery.dto.*;
+import com.sakshi.nursery.model.AuthProvider;
 import com.sakshi.nursery.model.Role;
 import com.sakshi.nursery.model.User;
 import com.sakshi.nursery.repository.UserRepository;
@@ -28,13 +26,33 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
+
+
+    public UserDto createUser(UserRequest userRequest) {
+        // Check if email already exists
+        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+
+        User user = new User();
+        user.setName(userRequest.getName());
+        user.setEmail(userRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setRole(Role.CUSTOMER);  // default role
+        user.setProvider(AuthProvider.LOCAL);  // default provider
+        user.setAddress(userRequest.getAddress());
+        user.setPhoneNumber(userRequest.getPhoneNumber());
+
+        User savedUser = userRepository.save(user);
+        return UserMapper.toDto(savedUser);
+    }
+
+
     public UserDto getCurrentUser() {
         User user = authUtil.getLoggedInUser();
         return UserMapper.toDto(user);
     }
 
-    @Override
     public UserDto updateUser(UpdateUserRequest request) {
         User user = authUtil.getLoggedInUser();
 
@@ -47,7 +65,6 @@ public class UserService {
         return UserMapper.toDto(user);
     }
 
-    @Override
     public void changePassword(PasswordChangeRequest request) {
         User user = authUtil.getLoggedInUser();
 
@@ -59,38 +76,33 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Override
     public void deleteCurrentUser() {
         User user = authUtil.getLoggedInUser();
         userRepository.delete(user);
     }
 
-    @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    @Override
     public UserDto getUserById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
         return UserMapper.toDto(user);
     }
 
-    @Override
     public void updateUserRole(UUID id, Role role) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
         user.setRole(role);
         userRepository.save(user);
     }
 
-    @Override
     public void deleteUserById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.delete(user);
     }
 }
