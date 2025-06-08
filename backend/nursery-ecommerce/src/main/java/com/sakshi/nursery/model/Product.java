@@ -2,6 +2,9 @@ package com.sakshi.nursery.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "products")
 @Data
@@ -20,7 +23,7 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private Double price;
+    private BigDecimal price;
     @Column(nullable = false)
     private Integer stockQuantity;
     @ManyToOne
@@ -29,5 +32,9 @@ public class Product {
     private Category category;
     @Column(nullable = true)
     private String imageUrl;
+
+    public Product(Long id) {
+        this.id = id;
+    }
 }
 

@@ -14,11 +14,15 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID) // Generates UUID as primary key
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Generates UUID as primary key
+    private Long id;
 
     @Column(nullable = false, length = 255)
     private String name;
+
+    public User(Long id) {
+        this.id = id;
+    }
 
     @Column(nullable = false, unique = true, length = 255)
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
@@ -46,6 +50,11 @@ public class User {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+
+
+
+
 
     @PrePersist
     protected void onCreate() {

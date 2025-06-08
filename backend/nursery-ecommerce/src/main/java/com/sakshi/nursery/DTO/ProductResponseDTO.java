@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -12,7 +14,7 @@ public class ProductResponseDTO {
     private Long id;
     private String name;
     private String description;
-    private Double price;
+    private BigDecimal price;
     private Integer stockQuantity;
     private String imageUrl;
     private CategoryDTO category;

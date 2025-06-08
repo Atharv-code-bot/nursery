@@ -3,26 +3,29 @@ package com.sakshi.nursery.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "cart_items")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItem {
 
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+
+   @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     private Product product;
 
-    @Column(nullable = false)
     private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id",referencedColumnName = "id",nullable = false)
+    private Cart cart;
 }
+

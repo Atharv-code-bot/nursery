@@ -16,11 +16,11 @@ public class Review {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     private Product product;
 
     @Column(nullable = false)
