@@ -2,6 +2,7 @@ package com.sakshi.nursery.config;
 
 
 import com.sakshi.nursery.model.User;
+
 import com.sakshi.nursery.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
