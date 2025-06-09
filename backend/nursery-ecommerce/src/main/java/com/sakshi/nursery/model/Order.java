@@ -1,38 +1,33 @@
 package com.sakshi.nursery.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Order {
 
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(nullable = false, updatable = false)
+    private String id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
+    private List<OrderItem> items;
 
-    @Column(nullable = false)
-    private Double totalAmount;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status; // PENDING, SHIPPED, DELIVERED, CANCELED
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDate;
-
-
+    public Order(String id) {
+        this.id = id;
+    }
 }

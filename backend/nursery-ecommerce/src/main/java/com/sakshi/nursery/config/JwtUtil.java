@@ -3,10 +3,16 @@ package com.sakshi.nursery.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import java.security.Key;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +20,17 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "TaK+HaV^uvCHEFsEVfypW#7g9^k*Z8$V";
+    Key getkey = generateRandomKey(); // This generates a random key used for signing and verifying JWT tokens
 
-    private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+
+    // This method generates a random secret key used for signing the JWT token
+    @SneakyThrows
+    public static Key generateRandomKey()  {
+        // Using KeyGenerator to generate a random 256-bit key for HS256 (HMAC with SHA-256)
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
+        keyGenerator.init(256, new SecureRandom()); // Initializes the key generator with 256-bit key and a secure random source
+        SecretKey secretKey = keyGenerator.generateKey(); // Generates the secret key
+        return secretKey; // Return the generated secret key
     }
 
     public String extractUsername(String token) {
@@ -38,7 +51,7 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(getkey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -60,7 +73,7 @@ public class JwtUtil {
                 .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 50)) // 50 min validity
-                .signWith(getSigningKey())
+                .signWith(getkey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
