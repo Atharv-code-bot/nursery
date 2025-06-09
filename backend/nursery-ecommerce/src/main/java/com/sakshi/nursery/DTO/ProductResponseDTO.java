@@ -1,4 +1,4 @@
-package com.sakshi.nursery.DTO;
+package com.sakshi.nursery.dto;
 import com.sakshi.nursery.model.Product;
 import com.sakshi.nursery.model.ProductImage;
 import lombok.AllArgsConstructor;

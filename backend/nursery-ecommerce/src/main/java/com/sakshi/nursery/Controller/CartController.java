@@ -1,6 +1,7 @@
-package com.sakshi.nursery.Controller;
-import com.sakshi.nursery.DTO.CartItemDTO;
-import com.sakshi.nursery.DTO.CartItemResponseDTO;
+package com.sakshi.nursery.controller;
+
+import com.sakshi.nursery.dto.CartItemDTO;
+import com.sakshi.nursery.dto.CartItemResponseDTO;
 import com.sakshi.nursery.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

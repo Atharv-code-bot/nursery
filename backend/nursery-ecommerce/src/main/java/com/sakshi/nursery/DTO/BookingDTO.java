@@ -1,4 +1,4 @@
-package com.sakshi.nursery.DTO;
+package com.sakshi.nursery.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sakshi.nursery.model.PaymentStatus;

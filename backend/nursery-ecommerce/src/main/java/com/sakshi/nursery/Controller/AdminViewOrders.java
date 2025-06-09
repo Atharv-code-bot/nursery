@@ -1,5 +1,6 @@
-package com.sakshi.nursery.Controller;
-import com.sakshi.nursery.DTO.AdminOrderResponseDTO;
+package com.sakshi.nursery.controller;
+
+import com.sakshi.nursery.dto.AdminOrderResponseDTO;
 import com.sakshi.nursery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

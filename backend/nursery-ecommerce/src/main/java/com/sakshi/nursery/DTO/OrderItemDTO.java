@@ -1,4 +1,4 @@
-package com.sakshi.nursery.DTO;
+package com.sakshi.nursery.dto;
 
 
 import jakarta.persistence.GeneratedValue;

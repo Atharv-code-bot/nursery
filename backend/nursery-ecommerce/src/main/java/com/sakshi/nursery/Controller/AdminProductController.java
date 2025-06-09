@@ -1,5 +1,6 @@
-package com.sakshi.nursery.Controller;
-import com.sakshi.nursery.DTO.ProductResponseDTO;
+package com.sakshi.nursery.controller;
+
+import com.sakshi.nursery.dto.ProductResponseDTO;
 import com.sakshi.nursery.model.Product;
 import com.sakshi.nursery.repository.CategoryRepository;
 import com.sakshi.nursery.service.ProductService;

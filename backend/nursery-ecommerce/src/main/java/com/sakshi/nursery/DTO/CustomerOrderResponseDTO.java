@@ -1,4 +1,4 @@
-package com.sakshi.nursery.DTO;
+package com.sakshi.nursery.dto;
 import com.sakshi.nursery.model.OrderStatus;
 import com.sakshi.nursery.model.PaymentStatus;
 import lombok.Data;
