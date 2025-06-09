@@ -1,4 +1,5 @@
 package com.sakshi.nursery.repository;
+
 import com.sakshi.nursery.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,5 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllWithImages();
 
 }
+
 
 
