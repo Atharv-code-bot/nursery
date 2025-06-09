@@ -6,7 +6,7 @@ import com.sakshi.nursery.model.Role;
 import java.util.UUID;
 
 public class UserDto {
-    private UUID id;
+    private Long id;
     private String name;
     private String email;
     private String phoneNumber;
@@ -14,11 +14,11 @@ public class UserDto {
     private Role role;
     private AuthProvider provider;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

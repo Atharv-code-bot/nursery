@@ -1,5 +1,6 @@
 package com.sakshi.nursery.service;
-import com.sakshi.nursery.DTO.ProductResponseDTO;
+
+import com.sakshi.nursery.dto.ProductResponseDTO;
 import com.sakshi.nursery.model.Category;
 import com.sakshi.nursery.model.OrderItem;
 import com.sakshi.nursery.model.Product;
