@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -30,8 +32,10 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     @JsonBackReference
     private Category category;
-    @Column(nullable = true)
-    private String imageUrl;
+//    @Column(nullable = true)
+//    private String imageUrl;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> images = new ArrayList<>();
 
     public Product(Long id) {
         this.id = id;

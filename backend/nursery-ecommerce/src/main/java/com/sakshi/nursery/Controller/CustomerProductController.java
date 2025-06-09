@@ -21,21 +21,18 @@ public class CustomerProductController {
 
     @GetMapping("/all")
     public List<ProductResponseDTO> getAllProducts() {
-        return productService.getAllProducts()
-                .stream()
-                .map(ProductResponseDTO::new)
-                .collect(Collectors.toList());
+        return productService.getAllProducts();
+
     }
 
     @GetMapping("/category/{name}")
-    public ResponseEntity<List<Product>> getProductByCategory(@PathVariable("name") String name) {
-        List<Product> product = productService.getProductsByCategoryName(name);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<List<ProductResponseDTO>> getProductsByCategory(@PathVariable String name) {
+        return ResponseEntity.ok(productService.getProductsByCategoryName(name));
     }
 
     @GetMapping("/product/{name}")
     public ProductResponseDTO getProductsByName(@PathVariable String name) {
-        return new ProductResponseDTO(productService.getProductsByName(name));
+        return productService.getProductByName(name);
     }
 }
 

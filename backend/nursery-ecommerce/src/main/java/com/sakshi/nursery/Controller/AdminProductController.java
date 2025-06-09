@@ -29,20 +29,17 @@ public class AdminProductController {
 
     @GetMapping("/all")
     public List<ProductResponseDTO> getAllProducts() {
-        return productService.getAllProducts()
-                .stream()
-                .map(ProductResponseDTO::new)
-                .collect(Collectors.toList());
+        return productService.getAllProducts();
+
     }
 
     @GetMapping("/category/{name}")
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("name") String name) {
-        List<Product> product = productService.getProductsByCategoryName(name);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<List<ProductResponseDTO>> getProductsByCategory(@PathVariable String name) {
+        return ResponseEntity.ok(productService.getProductsByCategoryName(name));
     }
 
     @PostMapping(path = "/create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestPart("file") MultipartFile file, @RequestPart Product product, @RequestParam String token) {
+    public ResponseEntity<ProductResponseDTO> createProduct(@RequestPart("file") MultipartFile[] file, @RequestPart Product product, @RequestParam String token) {
         Product savedProduct = productService.createProduct(product,file);
         pushNotificationService.sendPushNotificationToToken(token,product);
 
@@ -50,9 +47,9 @@ public class AdminProductController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@RequestBody Product productRequest) {
-        Product updatedProduct = productService.updateProduct(productRequest);
+    @PutMapping( path = "/update" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductResponseDTO> updateProduct(@RequestPart Product productRequest,@RequestPart MultipartFile[] file) {
+        Product updatedProduct = productService.updateProduct(productRequest,file);
         return ResponseEntity.ok(new ProductResponseDTO(updatedProduct));
     }
 
@@ -65,7 +62,7 @@ public class AdminProductController {
 
     @GetMapping("/product/{name}")
     public ProductResponseDTO getProductsByName(@PathVariable String name) {
-        return new ProductResponseDTO(productService.getProductsByName(name));
+        return productService.getProductByName(name);
     }
 }
 

@@ -1,14 +1,17 @@
 package com.sakshi.nursery.DTO;
 import com.sakshi.nursery.model.Product;
+import com.sakshi.nursery.model.ProductImage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Data
 public class ProductResponseDTO {
     private Long id;
@@ -16,7 +19,7 @@ public class ProductResponseDTO {
     private String description;
     private BigDecimal price;
     private Integer stockQuantity;
-    private String imageUrl;
+    private List<String> imageUrls; // ✅ Change from single imageUrl to list
     private CategoryDTO category;
 
     public ProductResponseDTO(Product product) {
@@ -25,10 +28,21 @@ public class ProductResponseDTO {
         this.description = product.getDescription();
         this.price = product.getPrice();
         this.stockQuantity = product.getStockQuantity();
-        this.imageUrl = product.getImageUrl();
-        // ✅ Only passing category id and name
-        this.category = new CategoryDTO( product.getCategory().getId(), product.getCategory().getName());
+
+        // ✅ Extract all image paths from the product's image list
+        this.imageUrls = product.getImages().stream()
+                .map(ProductImage::getImagePath)
+                .collect(Collectors.toList());
+
+        this.category = new CategoryDTO(
+                product.getCategory().getId(),
+                product.getCategory().getName()
+        );
     }
 
+
+
+    // Getters and Setters (or use Lombok @Getter/@Setter if you prefer)
 }
+
 
